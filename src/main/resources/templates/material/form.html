@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -11,13 +11,21 @@
     <title>Quote Levelling - Novo Material</title>
 </head>
 <body>
+
+    <nav class="nav">
+        <h1>QuoteLevelling</h1>
+        <details class="dropdown">
+            <summary role="button" class="secondary">Sair/Voltar</summary>
+            <ul>
+              <li><a href="/materiais">Voltar</a></li>
+              <li><a href="/menu">Menu</a></li>
+              <li><a href="/logout">Sair</a></li>
+            </ul>
+        </details>
+    </nav>
     
-    <h1>QuoteLevelling</h1>
-
-    <h2 th:text="#{material.create}"></h2>
-
     <form th:action="@{'/materiais'}" class="container" method="POST" th:object="${material}">
-
+        <h2 class="media nav" th:text="#{material.create}"></h2>
         <div class="nes-field">
             <label for="nome_material">Nome</label>
             <input th:field="*{nome_material}" class="nes-input">
@@ -44,9 +52,9 @@
         </div>
 
         <input type="submit" class="nes-btn" value="Cadastrar" name="submitBtn">
-        <a class="nes-btn is-error" href="/materiais">Cancelar</a>
+        
 
     </form>
-    
+    <script src="../theme.js"></script>
 </body>
 </html>

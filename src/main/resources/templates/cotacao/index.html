@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -12,38 +12,49 @@
 </head>
 <body>
     
-    <nav>
+    <nav class="nav">
         <span th:text="${user}"></span>
-        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded" >
-        <a href="/logout" class="nes-btn is-error">
-            Sair
-        </a>
+        <details class="dropdown">
+            <summary role="button" class="secondary">Tema</summary>
+            <ul>
+              <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+              <li><a href="#" data-theme-switcher="light">Light</a></li>
+              <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+            </ul>
+        </details>
+        <details class="dropdown">
+            <summary role="button" class="secondary">Sair/Voltar</summary>
+            <ul>
+              <li><a href="/menu">Voltar</a></li>
+              <li><a href="/logout">Sair</a></li>
+            </ul>
+        </details>
     </nav>
 
-    <h1>QuoteLevelling</h1>
+    <div class="header-container media">
+        <h1>QuoteLevelling</h1>
+        <button class="outline"><a href="/cotacoes/new" class="">Nova Cotação</a></button>
+    </div>
 
-    <h2>Lista de Cotações</h2>
+    <h2 class="header-container media">Lista de Cotações</h2>
 
-    <section class="grid">
-        <div th:each="cotacao : ${cotacoes}" class="nes-container is-dark with-title">
+    <section class="grid media ">
+        <div th:each="cotacao : ${cotacoes}" class="card section">
             <p class="title" th:text="'Código da Cotação: ' + ${cotacao.id_cotacao}"></p>
-            <p th:text="'Valor Total: ' + ${cotacao.valTotal_cotacao}"></p>
-            <p th:text="'Quantidade Total de Materiais : ' + ${cotacao.qtdTotal_cotacao}"></p>
-            <p th:text="'Cliente: ' + ${cotacao.cliente.nome_empresa}"></p>
-            <p th:text="'Fornecedor: ' + ${cotacao.fornecedor.nome_empresa}"></p>
-    
+            <p><strong>Valor Total:</strong> <span th:text="${cotacao.valTotal_cotacao}"></span></p>
+            <p><strong>Quantidade Total de Materiais:</strong> <span th:text="${cotacao.qtdTotal_cotacao}"></span></p>
+            <p><strong>Cliente:</strong> <span th:text="${cotacao.cliente.nome_empresa}"></span></p>
+            <p><strong>Fornecedor:</strong> <span th:text="${cotacao.fornecedor.nome_empresa}"></span></p>
+
             <details>
                 <summary>Materiais</summary>
-                    <p th:each="material : ${cotacao.materiais}" th:text="'Nome: ' + ${material.nome_material} + ', Descrição: ' + ${material.descricao_material}"></p>
+                <p th:each="material : ${cotacao.materiais}" th:text="'Nome: ' + ${material.nome_material} + ', Descrição: ' + ${material.descricao_material}"></p>
             </details>
-
         </div>
     </section>
 
-    <a href="/cotacoes/new" class="nes-btn is-primary">Nova Cotação</a>
-    <a href="/menu" class="nes-btn is-error">
-        Voltar
-    </a>
+    
 
+    <script src="theme.js"></script>
 </body>
 </html>

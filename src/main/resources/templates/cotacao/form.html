@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -17,44 +17,60 @@
 </head>
 <body>
 
-    <nav>
+    <nav class="nav">
         <span th:text="${user}"></span>
-        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded">
-        <a href="/logout" class="nes-btn is-error">Sair</a>
+        <details class="dropdown">
+            <summary role="button" class="secondary">Tema</summary>
+            <ul>
+              <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+              <li><a href="#" data-theme-switcher="light">Light</a></li>
+              <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+            </ul>
+        </details>
+        <details class="dropdown">
+            <summary role="button" class="secondary">Sair/Voltar</summary>
+            <ul>
+              <li><a href="/cotacoes">Voltar</a></li>
+              <li><a href="/menu">Menu</a></li>
+              <li><a href="/logout">Sair</a></li>
+            </ul>
+        </details>
     </nav>
 
-    <h1>QuoteLevelling</h1>
-    <h2 th:text="#{cotacao.create}"></h2>
-
-    <section class="grid">
-        <div th:each="material : ${materiais}" class="nes-container is-dark with-title">
+    <div class="media ">
+        <h1>QuoteLevelling</h1>
+        
+    </div>
+    <h2 class="media " th:text="#{cotacao.create}"></h2>
+    <section class="grid media">
+        <div th:each="material : ${materiais}" class="card section">
             <p class="title" th:text="'Código do Material: ' + ${material.id_material}"></p>
-            <p th:text="'Nome: ' + ${material.nome_material}"></p>
-            <p th:text="'Quantidade: ' + ${material.qtd_material}"></p>
-            <p th:text="'Valor unitário: ' + ${material.valUnit_material}"></p>
-            <p th:text="'Descrição: ' + ${material.descricao_material}"></p>
+            <p><strong>Nome:</strong> <span th:text="${material.nome_material}"></span></p>
+            <p><strong>Quantidade:</strong> <span th:text="${material.qtd_material}"></span></p>
+            <p><strong>Valor unitário:</strong> <span th:text="${material.valUnit_material}"></span></p>
+            <p><strong>Descrição:</strong> <span th:text="${material.descricao_material}"></span></p>
         </div>
     </section>
 
-    <form th:action="@{/cotacoes}" class="container" method="POST">
+    <form th:action="@{/cotacoes}" method="POST" class="container">
         <div id="materiaisContainer">
             <div class="material-entry">
-                <div class="nes-field">
+                <div>
                     <label for="materialIds">Selecione o Código do Material</label>
-                    <select name="materialIds" class="nes-input" required>
+                    <select name="materialIds" required>
                         <option th:each="material : ${materiais}" th:value="${material.id_material}" th:text="${material.nome_material}"></option>
                     </select>
                 </div>
-                <div class="nes-field">
+                <div>
                     <label for="quantidades">Selecione a Quantidade</label>
-                    <input type="number" name="quantidades" class="nes-input" required min="1">
+                    <input type="number" name="quantidades" required min="1">
                 </div>
             </div>
         </div>
-        <button type="button" class="nes-btn is-primary" onclick="addMaterial()">Adicionar mais um material</button>
+        <button type="button" onclick="addMaterial()">Adicionar mais um material</button>
         <br/><br/>
-        <input type="submit" class="nes-btn is-success" value="Cadastrar">
-        <a class="nes-btn is-error" href="/cotacoes">Cancelar</a>
+        <input type="submit" value="Cadastrar" class="secondary">
+        
     </form>
 
     <p th:if="${error}" th:text="${error}" class="error-message"></p>
@@ -66,6 +82,6 @@
             container.appendChild(entry);
         }
     </script>
-
+    <script src="../theme.js"></script>
 </body>
 </html>
