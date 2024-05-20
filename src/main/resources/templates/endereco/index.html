@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <title>Quote Levelling - Enderecos</title>
+</head>
+<body>
+    
+    <nav>
+        <span th:text="${user}"></span>
+        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded" >
+        <a href="/logout" class="nes-btn is-error">
+            Sair
+        </a>
+    </nav>
+
+    <h1>QuoteLevelling</h1>
+
+    <h2>Lista de Endereços</h2>
+
+    <section class="grid">
+        <div th:each="endereco : ${enderecos}" class="nes-container is-dark with-title">
+            <p class="title" th:text="${endereco.id_endereco}"></p>
+            <p th:text="${endereco.rua_endereco}"></p>
+            <p th:text="${endereco.cidade_endereco}"></p>
+            <p th:text="${endereco.uf_endereco}"></p>
+            <p th:text="${endereco.cep_endereco}"></p>
+            <p th:text="${endereco.numero_endereco}"></p>
+
+            <details>
+                <summary>Funções</summary>
+                <button type="button" class="nes-btn is-warning">Editar</button>
+
+                <form th:action="${'/enderecos/' + endereco.id_endereco}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button class="nes-btn is-error">
+                        Excluir
+                    </button>
+                </form>
+            </details>
+    
+        </div>
+    </section>
+
+    <a href="/enderecos/new" class="nes-btn is-primary">Novo Endereco</a>
+
+</body>
+</html>

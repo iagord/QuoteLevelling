@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <title>Quote Levelling - Menu</title>
+</head>
+<body>
+    
+    <nav>
+        <span th:text="${user}"></span>
+        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded" >
+        <a href="/logout" class="nes-btn is-error">
+            Sair
+        </a>
+    </nav>
+
+    <h1>QuoteLevelling</h1>
+
+    <h2>Bem-vindo a nossa aplicação!</h2>
+
+    <a href="/cotacoes" class="nes-btn is-primary">Cotacoes</a>
+    <a href="/enderecos" class="nes-btn is-primary">Enderecos</a>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <title>Quote Levelling - Cotacao</title>
+</head>
+<body>
+    
+    <nav>
+        <span th:text="${user}"></span>
+        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded" >
+        <a href="/logout" class="nes-btn is-error">
+            Sair
+        </a>
+    </nav>
+
+    <h1>QuoteLevelling</h1>
+
+    <h2>Lista de Cotações</h2>
+
+    <section class="grid">
+        <div th:each="cotacao : ${cotacoes}" class="nes-container is-dark with-title">
+            <p class="title" th:text="'Código da Cotação: ' + ${cotacao.id_cotacao}"></p>
+            <p th:text="'Valor Total: ' + ${cotacao.valTotal_cotacao}"></p>
+            <p th:text="'Quantidade Total de Materiais : ' + ${cotacao.qtdTotal_cotacao}"></p>
+            <p th:text="'Cliente: ' + ${cotacao.cliente.nome_empresa}"></p>
+            <p th:text="'Fornecedor: ' + ${cotacao.fornecedor.nome_empresa}"></p>
+    
+            <details>
+                <summary>Materiais</summary>
+                    <p th:each="material : ${cotacao.materiais}" th:text="'Nome: ' + ${material.nome_material} + ', Descrição: ' + ${material.descricao_material}"></p>
+            </details>
+
+        </div>
+    </section>
+
+    <a href="/cotacoes/new" class="nes-btn is-primary">Nova Cotação</a>
+
+</body>
+</html>
