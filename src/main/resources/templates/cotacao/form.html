@@ -9,48 +9,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../global.css">
     <title>Quote Levelling - Cotações</title>
+    <style>
+        .material-entry {
+            margin-bottom: 1em;
+        }
+    </style>
 </head>
 <body>
 
     <nav>
         <span th:text="${user}"></span>
-        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded" >
-        <a href="/logout" class="nes-btn is-error">
-            Sair
-        </a>
+        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded">
+        <a href="/logout" class="nes-btn is-error">Sair</a>
     </nav>
 
     <h1>QuoteLevelling</h1>
-
     <h2 th:text="#{cotacao.create}"></h2>
 
     <section class="grid">
         <div th:each="material : ${materiais}" class="nes-container is-dark with-title">
-            <p class="title" th:text="'Código da Material: ' + ${material.id_material}"></p>
+            <p class="title" th:text="'Código do Material: ' + ${material.id_material}"></p>
             <p th:text="'Nome: ' + ${material.nome_material}"></p>
             <p th:text="'Quantidade: ' + ${material.qtd_material}"></p>
-            <p th:text="'Valor unitario: ' + ${material.valUnit_material}"></p>
-            <p th:text="'Descricao: ' + ${material.descricao_material}"></p>
+            <p th:text="'Valor unitário: ' + ${material.valUnit_material}"></p>
+            <p th:text="'Descrição: ' + ${material.descricao_material}"></p>
         </div>
     </section>
 
-
-    <form th:action="@{'/cotacoes'}" class="container" method="POST">
-        <div class="nes-field">
-            <label for="materialId">Selecione o Código do Material</label>
-            <input type="number" name="materialId" id="materialId" class="nes-input" required multiple>
+    <form th:action="@{/cotacoes}" class="container" method="POST">
+        <div id="materiaisContainer">
+            <div class="material-entry">
+                <div class="nes-field">
+                    <label for="materialIds">Selecione o Código do Material</label>
+                    <select name="materialIds" class="nes-input" required>
+                        <option th:each="material : ${materiais}" th:value="${material.id_material}" th:text="${material.nome_material}"></option>
+                    </select>
+                </div>
+                <div class="nes-field">
+                    <label for="quantidades">Selecione a Quantidade</label>
+                    <input type="number" name="quantidades" class="nes-input" required min="1">
+                </div>
+            </div>
         </div>
-
-        <div class="nes-field">     
-            <label for="quantidade">Selecione a Quantidade</label>
-            <input type="number" name="quantidade" id="quantidade" class="nes-input" required multiple>
-        </div>
-
-        <input type="submit" class="nes-btn" value="Cadastrar" name="submitBtn">
+        <button type="button" class="nes-btn is-primary" onclick="addMaterial()">Adicionar mais um material</button>
+        <br/><br/>
+        <input type="submit" class="nes-btn is-success" value="Cadastrar">
         <a class="nes-btn is-error" href="/cotacoes">Cancelar</a>
     </form>
 
     <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
+    <script>
+        function addMaterial() {
+            const container = document.getElementById('materiaisContainer');
+            const entry = document.querySelector('.material-entry').cloneNode(true);
+            container.appendChild(entry);
+        }
+    </script>
 
 </body>
 </html>

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-import br.com.fiap.quotelevelling.user.User;
-
 
 @Controller
 @RequestMapping("menu")
@@ -17,7 +15,6 @@ public class MenuController {
     
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal DefaultOAuth2User user){
-        User myUser = (User) user;
         model.addAttribute("user", user.getAttribute("name"));
         model.addAttribute("avatar", user.getAttribute("avatar_url"));
         return "menu/index";

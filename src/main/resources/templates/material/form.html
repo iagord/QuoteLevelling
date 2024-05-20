@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global.css">
+    <title>Quote Levelling - Novo Material</title>
+</head>
+<body>
+    
+    <h1>QuoteLevelling</h1>
+
+    <h2 th:text="#{material.create}"></h2>
+
+    <form th:action="@{'/materiais'}" class="container" method="POST" th:object="${material}">
+
+        <div class="nes-field">
+            <label for="nome_material">Nome</label>
+            <input th:field="*{nome_material}" class="nes-input">
+        </div>
+
+        <div class="nes-field">
+            <label for="qtd_material">Quantidade</label>
+            <input th:field="*{qtd_material}" class="nes-input">
+        </div>
+
+        <div class="nes-field">
+            <label for="valUnit_material">Valor Unitário</label>
+            <input th:field="*{valUnit_material}" class="nes-input">
+        </div>
+
+        <div class="nes-field">
+            <label for="descricao_material">Descrição</label>
+            <input th:field="*{descricao_material}" class="nes-input">
+        </div>
+
+        <div class="nes-field">
+            <label for="fornecedor">Código do Fornecedor</label>
+            <input th:field="*{fornecedor}" class="nes-input">
+        </div>
+
+        <input type="submit" class="nes-btn" value="Cadastrar" name="submitBtn">
+        <a class="nes-btn is-error" href="/materiais">Cancelar</a>
+
+    </form>
+    
+</body>
+</html>

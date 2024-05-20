@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
+    <title>Quote Levelling - Materiais</title>
+</head>
+<body>
+    
+    <nav>
+        <span th:text="${user}"></span>
+        <img th:src="${avatar}" alt="avatar do usuario" class="nes-avatar is-medium is-rounded">
+        <a href="/logout" class="nes-btn is-error">Sair</a>
+    </nav>
+
+    <h1>QuoteLevelling</h1>
+
+    <h2>Lista de Materiais</h2>
+
+    <section class="grid">
+        <div th:each="material : ${materiais}" class="nes-container is-dark with-title">
+            <p class="title" th:text="'Código do Material: ' + ${material.id_material}"></p>
+            <p th:text="'Nome: ' + ${material.nome_material}"></p>
+            <p th:text="'Quantidade: ' + ${material.qtd_material}"></p>
+            <p th:text="'Valor unitário: ' + ${material.valUnit_material}"></p>
+            <p th:text="'Descrição: ' + ${material.descricao_material}"></p>
+            <p th:text="'Fornecedor: ' + ${material.fornecedor.nome_empresa}"></p>
+
+            <details>
+                <summary>Funções</summary>
+                <form th:action="@{'/materiais/' + ${material.id_material}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button class="nes-btn is-error">Excluir</button>
+                </form>
+            </details>
+        </div>
+    </section>
+
+    <a href="/materiais/new" class="nes-btn is-primary">Novo Material</a>
+    <a href="/menu" class="nes-btn is-error">Voltar</a>
+
+    <p th:if="${message}" th:text="${message}" class="nes-text is-success"></p>
+    <p th:if="${error}" th:text="${error}" class="nes-text is-error"></p>
+
+</body>
+</html>

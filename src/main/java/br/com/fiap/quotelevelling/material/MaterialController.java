@@ -1,5 +1,4 @@
-package br.com.fiap.quotelevelling.endereco;
-
+package br.com.fiap.quotelevelling.material;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,55 +16,57 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import jakarta.validation.Valid;
 
+
 @Controller
-@RequestMapping("enderecos")
-public class EnderecoController {
+@RequestMapping("materiais")
+public class MaterialController {
     
+
     @Autowired
-    EnderecoRepository repository;
+    MaterialRepository repository;
 
     @Autowired
     MessageSource messageSource;
 
     @GetMapping
     public String index(Model model, @AuthenticationPrincipal DefaultOAuth2User user){
-        model.addAttribute("enderecos", repository.findAll());
+        model.addAttribute("materiais", repository.findAll());
         model.addAttribute("user", user.getAttribute("name"));
         model.addAttribute("avatar", user.getAttribute("avatar_url"));
-        return "endereco/index";
+        return "material/index";
     }
 
     @GetMapping("new")
-    public String form(Endereco endereco){
-        return "endereco/form";
+    public String form(Material material){
+        return "material/form";
     }
 
     @PostMapping
-    public String insert(@Valid Endereco endereco, BindingResult result, RedirectAttributes redirect){
-        if (result.hasErrors())return "endereco/form";
-        repository.save(endereco);
+    public String insert(@Valid Material material, BindingResult result, RedirectAttributes redirect){
+        if (result.hasErrors())return "material/form";
+        repository.save(material);
         redirect.addFlashAttribute("message", messageSource.getMessage("endereco.create", null , LocaleContextHolder.getLocale()));
-        return "redirect:/enderecos";
+        return "redirect:/materiais";
     }
 
     @DeleteMapping("{id}")
     public String delete(@PathVariable Long id, RedirectAttributes redirect){
-        var endereco = repository.findById(id);
+        var material = repository.findById(id);
 
-        if (endereco.isEmpty()){
-            redirect.addFlashAttribute("message", "Erro ao apagar. Endereco não encontrado");
-            return "redirect:/enderecos";
+        if (material.isEmpty()){
+            redirect.addFlashAttribute("message", "Erro ao apagar. Material não encontrado");
+            return "redirect:/materiais";
         }
-        
+
         try {
-        repository.deleteById(id);
-        redirect.addFlashAttribute("message", messageSource.getMessage("endereco.delete", null, LocaleContextHolder.getLocale()));
+            repository.deleteById(id);
+            redirect.addFlashAttribute("message", messageSource.getMessage("material.delete", null, LocaleContextHolder.getLocale()));
         } catch (DataIntegrityViolationException e) {
-            redirect.addFlashAttribute("error", "Erro ao apagar. Endereco está associado a uma Empresa e não pode ser deletado.");
+            redirect.addFlashAttribute("error", "Erro ao apagar. Material está associado a uma cotação e não pode ser deletado.");
         }
-        return "redirect:/enderecos";
+        return "redirect:/materiais";
     }
 }
+

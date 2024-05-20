@@ -9,10 +9,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,14 +20,10 @@ import br.com.fiap.quotelevelling.empresa.fornecedor.Fornecedor;
 import br.com.fiap.quotelevelling.empresa.fornecedor.FornecedorRepository;
 import br.com.fiap.quotelevelling.material.Material;
 import br.com.fiap.quotelevelling.material.MaterialRepository;
-import br.com.fiap.quotelevelling.user.User;
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
 @RequestMapping("cotacoes")
-@Slf4j
 public class CotacaoController {
     
     @Autowired
@@ -55,7 +49,6 @@ public class CotacaoController {
             Set<Material> materiais = cotacao.getMateriais();
         }
 
-
         model.addAttribute("cotacoes", cotacaoRepository.findAll());
         model.addAttribute("user", user.getAttribute("name"));
         model.addAttribute("avatar", user.getAttribute("avatar_url"));
@@ -65,7 +58,6 @@ public class CotacaoController {
     @GetMapping("new")
     public String form(Cotacao cotacao, Model model, @AuthenticationPrincipal DefaultOAuth2User user){
         model.addAttribute("materiais", materialRepository.findAll());
-        
         model.addAttribute("user", user.getAttribute("name"));
         model.addAttribute("avatar", user.getAttribute("avatar_url"));
 
@@ -73,34 +65,43 @@ public class CotacaoController {
     }
 
     @PostMapping
-    public String insert(Long materialId, int quantidade, RedirectAttributes redirect, Model model, @AuthenticationPrincipal DefaultOAuth2User user){
-        Material material = materialRepository.findById(materialId).orElse(null);
+    public String insert(Long[] materialIds, int[] quantidades, RedirectAttributes redirect, Model model, @AuthenticationPrincipal DefaultOAuth2User user){
+        Cotacao cotacao = new Cotacao();
+        double valTotal = 0;
+        int qtdTotal = 0;
 
-        if (material != null && material.getQtd_material() >= quantidade) {
-            Cotacao cotacao = new Cotacao();
-            cotacao.setValTotal_cotacao(material.getValUnit_material() * quantidade);
-            cotacao.setQtdTotal_cotacao(quantidade);
+        for (int i = 0; i < materialIds.length; i++) {
+            Long materialId = materialIds[i];
+            int quantidade = quantidades[i];
+            Material material = materialRepository.findById(materialId).orElse(null);
 
-            Long clienteId = (long) 2;
-            cotacao.setCliente(clienteRepository.getById(clienteId));
+            if (material != null && material.getQtd_material() >= quantidade) {
+                valTotal += material.getValUnit_material() * quantidade;
+                qtdTotal += quantidade;
 
-            Fornecedor fornecedorMaterial = material.getFornecedor();
-            cotacao.setFornecedor(fornecedorRepository.getById(fornecedorMaterial.getId_empresa()));
+                cotacao.getMateriais().add(material);
 
-            cotacao.getMateriais().add(material);
-
-            // Realizar baixa na quantidade do material
-            material.setQtd_material(material.getQtd_material() - quantidade);
-
-            cotacaoRepository.save(cotacao);
-        } else {
-            model.addAttribute("error", "Material inválido ou quantidade insuficiente.");
-            model.addAttribute("materiais", materialRepository.findAll());
-            return "cotacao/form";
+                material.setQtd_material(material.getQtd_material() - quantidade);
+                materialRepository.save(material);
+            } else {
+                model.addAttribute("error", "Material inválido ou quantidade insuficiente.");
+                model.addAttribute("materiais", materialRepository.findAll());
+                return "cotacao/form";
+            }
         }
+
+        cotacao.setValTotal_cotacao(valTotal);
+        cotacao.setQtdTotal_cotacao(qtdTotal);
+
+        Long clienteId = (long) 2;
+        cotacao.setCliente(clienteRepository.getById(clienteId));
+
+        Fornecedor fornecedorMaterial = materialRepository.findById(materialIds[0]).get().getFornecedor();
+        cotacao.setFornecedor(fornecedorRepository.getById(fornecedorMaterial.getId_empresa()));
+
+        cotacaoRepository.save(cotacao);
 
         redirect.addFlashAttribute("message", messageSource.getMessage("cotacao.create", null , LocaleContextHolder.getLocale()));
         return "redirect:/cotacoes";
     }
-
 }

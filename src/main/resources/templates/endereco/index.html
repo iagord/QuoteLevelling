@@ -35,8 +35,6 @@
 
             <details>
                 <summary>Funções</summary>
-                <button type="button" class="nes-btn is-warning">Editar</button>
-
                 <form th:action="${'/enderecos/' + endereco.id_endereco}" method="post">
                     <input type="hidden" name="_method" value="delete"/>
                     <button class="nes-btn is-error">
@@ -49,6 +47,12 @@
     </section>
 
     <a href="/enderecos/new" class="nes-btn is-primary">Novo Endereco</a>
+    <a href="/menu" class="nes-btn is-error">
+        Voltar
+    </a>
+
+    <p th:if="${message}" th:text="${message}" class="nes-text is-success"></p>
+    <p th:if="${error}" th:text="${error}" class="nes-text is-error"></p>
 
 </body>
 </html>
