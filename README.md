@@ -5,7 +5,7 @@ Nome da Aplicação: Quote Levelling
 
 ![image](https://github.com/HebertLins/Sprint-1-JAVA/assets/111543334/cfad3699-e26c-4688-ba36-528b5e970c8a)
 
-## GUIA PARA TESTES E RODAR A APLICAÇÃO DEVOPS:
+## GUIA PARA TESTES DE PIPELINE, RELEASE E RODAR A APLICAÇÃO DEVOPS:
 
 1 - Entrar no site [Azure Quote Levelling](https://dev.azure.com/RM97221/QuoteLevelling).
 
@@ -38,10 +38,6 @@ Nome da Aplicação: Quote Levelling
 
 
 
-## Vídeo explicativo
+## Vídeo Pipeline
 
-PlaceHolder
-
-## EXEMPLOS DE JSON
-
-Para este arquivo não ser muito extenso optamos por manter os exemplos de JSON dentro do arquivo INSOMNIA que pode ser encontrado dentro da pasta "documentacao" do projeto.
+[Youtube](https://www.youtube.com/watch?v=KycuApy_n0Y)
